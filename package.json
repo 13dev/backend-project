@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "SET DEBUG=project-backend:* & npm start"
+    "start": "SET DEBUG=project-backend:* & nodemon ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
