@@ -1,4 +1,5 @@
 const config = require('../config')
+const jwt = require('jwt-simple');
 
 module.exports.generateTokenByUser = function (user) {
     return jwt.encode({

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const MalwareModel = require('./malware')
+const UserModel = require('./users')
 const config = require('../config').DB;
 
 const sequelize = new Sequelize(null, null, null, {
@@ -8,7 +9,9 @@ const sequelize = new Sequelize(null, null, null, {
 })
 
 const Malware = MalwareModel(sequelize, Sequelize);
+const User = UserModel(sequelize, Sequelize);
 
 module.exports = {
-  Malware,
+    Malware,
+    User,
 };

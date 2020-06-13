@@ -1,4 +1,5 @@
 const { generateTokenByUser }  = require('../services/auth')
+const { User } = require('../models')
 
 module.exports = new class AuthController {
     login (request, response, next) {
@@ -9,29 +10,23 @@ module.exports = new class AuthController {
 
     // Logica de registar
     register (request, response, next) {
-
         const {
             email,
             password,
             firstname,
-            lastname,
-        } = req.body;
+            lastname
+        } = request.body;
 
         if (!email || !password) {
-            return response.formatter.unprocess({
-                error: 'Email ou password em falta.'
-            })
+            return response.formatter.unprocess('Email ou password em falta.')
         }
 
-        User.findOne({ email: email }, (err, user) => {
-            if (err) return next(err);
+        if(!firstname || !lastname) {
+            return response.formatter.unprocess('Dados em falta tente novamente.')
+        }
 
-            const newUser = new User({
-                email: email,
-                password: password,
-                firstName: firstname,
-                lastName: lastname,
-            });
+        User.findOne({ where: { email: email } })
+            .then((user) => {
 
             // email já esta a ser usado.
             if (user) {
@@ -39,15 +34,19 @@ module.exports = new class AuthController {
                     error: 'Email já esta a ser usado.'
                 })
             }
+
             // Salvar utilizador na base de dados
-            newUser.save( function() {
-                if (err) return next(err)
-
+            User.create({
+                email: email,
+                password: password,
+                firstName: firstname,
+                lastName: lastname,
+            }).then(user => {
                 return response.formatter.ok({
-                    token: generateTokenByUser(newUser)
+                    token: generateTokenByUser(user)
                 })
-
             });
-        });
+
+        })
     };
 };
