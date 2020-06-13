@@ -9,7 +9,7 @@ module.exports = new class UsersController {
 
   //FIND A CERTAIN USER
   findUser(request, response, next, userId) {
-    Users.find({
+    Users.findAll({
       where: { id: userId }
     })
       .then((result) => response.formatter.ok(result))
