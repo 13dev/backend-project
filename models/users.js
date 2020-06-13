@@ -1,13 +1,17 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('Users', {
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      }, {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+  }, {
 
-      }
+  }
   );
 
   User.associate = function (models) {
@@ -15,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.beforeCreate((user, options) => {
-      return bcrypt.hash(user.password, 10)
-          .then(hash => {
-              user.password = hash;
-          })
-          .catch(err => {
-              throw new Error();
-          });
+    return bcrypt.hash(user.password, 10)
+      .then(hash => {
+        user.password = hash;
+      })
+      .catch(err => {
+        throw new Error();
+      });
   });
   return User;
 };
