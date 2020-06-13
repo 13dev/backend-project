@@ -32,10 +32,10 @@ module.exports = new class UsersController {
   //UPDATE USER
   updateUser(request, response, next) {
     Users.update({
-      firstName: request.params.firstName,
-      lastName: request.params.lastName,
-      email: request.params.email,
-      password: request.params.password,
+      firstName: request.body.firstName,
+      lastName: request.body.lastName,
+      email: request.body.email,
+      password: request.body.password,
     }, { where: { id: request.params.id } })
       .then((result) => response.formatter.ok(result))
       .catch((result) => response.formatter.serverError(result));
