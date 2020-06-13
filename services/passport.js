@@ -16,11 +16,11 @@ const localOptions = {
 const localSignin = new LocalStrategy(localOptions, (email, password, done) => {
 
         // verificar se utilizador existe.
-        User.findOne({ email: email }, (err, user) => {
-            if (err) return done(err);
+        User.findOne({ where: { email: email } })
+            .then(( user) => {
 
             // User não foi encontrado pelo email
-            if ( ! user ) return done(null, false);
+            if (!user) return done(null, false);
 
             // verificar password
             user.comparePassword(password, ( err, isMatch ) => {
@@ -43,7 +43,8 @@ const jwtOptions = {
 
 // Create JWT strategy
 const jwtSignin = new JwtStrategy( jwtOptions, (payload, done) => {
-    // Check DB for user ID in payload
+
+    //find user by id
     User.findById( payload.sub, (err, user) => {
         if (err) return done(err, false);
 

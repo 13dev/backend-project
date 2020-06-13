@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
   }, {
-
   }
   );
 
@@ -30,5 +29,13 @@ module.exports = (sequelize, DataTypes) => {
         throw new Error();
       });
   });
+
+  User.prototype.comparePassword = function (candidatePassword, callback) {
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+      if (err) return callback(err);
+      callback(null, isMatch);
+    })
+  }
+
   return User;
 };
