@@ -8,13 +8,13 @@ module.exports = {
           firstName: "Josefino",
           lastName: "Alves",
           email: "teste@josefino.com",
-          password: "123456789",
+          password: "123456789"
         },
         {
           firstName: "Josefina",
           lastName: "Faria",
           email: "teste@josefina.com",
-          password: "123456789",
+          password: "123456789"
         },
       ],
       {}
