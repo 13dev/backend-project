@@ -1,43 +1,36 @@
 
-const passport = require( 'passport' );
-const LocalStrategy = require( 'passport-local' );
-const JwtStrategy = require( 'passport-jwt' ).Strategy;
-const ExtractJwt = require( 'passport-jwt' ).ExtractJwt;
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const config = require('../config');
+const { User } = require('../models');
 
-const config = require( '../config' );
-const User = require('../models/user');
-
-// Setup options for local strategy
+// settar options para options
 const localOptions = {
     usernameField: 'email',
     passwordField: 'password'
 };
 
 // Create local strategy
-const localSignin = new LocalStrategy( localOptions,
-    function( email, password, done ) {
-        // Verify email and password
-        User.findOne({ email: email }, function( err, user ) {
-            // Handle errors
-            if ( err ) { return done( err ); }
+const localSignin = new LocalStrategy(localOptions, (email, password, done) => {
 
-            // Handle user not found by email
-            if ( ! user ) {
-                return done( null, false );
-            }
+        // verificar se utilizador existe.
+        User.findOne({ email: email }, (err, user) => {
+            if (err) return done(err);
 
-            // Is `password' = to user.password?
-            user.comparePassword( password, function( err, isMatch ) {
-                // Handle errors
-                if ( err ) { return done( err ); }
+            // User não foi encontrado pelo email
+            if ( ! user ) return done(null, false);
 
-                // No match
-                if ( ! isMatch ) {
-                    return done( null, false );
-                }
+            // verificar password
+            user.comparePassword(password, ( err, isMatch ) => {
+                if (err) return done(err);
+
+                // As password são diferentes
+                if (!isMatch) return done(null, false);
 
                 // Match
-                return done( null, user );
+                return done(null, user);
             });
         });
     });
@@ -45,25 +38,20 @@ const localSignin = new LocalStrategy( localOptions,
 // Setup options for JWT strategy
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromHeader( 'authorization' ),
-    secretOrKey: config.secret
+    secretOrKey: config.JWT.SECRET
 };
 
 // Create JWT strategy
-const jwtSignin = new JwtStrategy( jwtOptions, function( payload, done ) {
+const jwtSignin = new JwtStrategy( jwtOptions, (payload, done) => {
     // Check DB for user ID in payload
-    User.findById( payload.sub, function( err, user ) {
-        // Handle errors
-        if ( err ) {
-            return done( err, false );
-        }
+    User.findById( payload.sub, (err, user) => {
+        if (err) return done(err, false);
 
-        // No user found by ID
-        if ( ! user ) {
-            done( null, false );
-        }
+        //utilizador não foi entrado.
+        if (!user) done( null, false);
 
-        // User found
-        done( null, user );
+        // utilizador encontrado.
+        done(null, user);
     });
 });
 

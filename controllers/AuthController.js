@@ -2,40 +2,49 @@ const { generateTokenByUser }  = require('../services/auth')
 
 module.exports = new class AuthController {
     login (request, response, next) {
-        //TODO: to implement
+        response.formatter.ok({
+            token: generateTokenByUser(request.user)
+        })
     }
 
+    // Logica de registar
     register (request, response, next) {
-        const { email, password } = req.body;
+
+        const {
+            email,
+            password,
+            firstname,
+            lastname,
+        } = req.body;
 
         if (!email || !password) {
             return response.formatter.unprocess({
-                error: "Email ou password em falta."
+                error: 'Email ou password em falta.'
             })
         }
 
-        User.findOne({ email: email }, function( err, existingUser ) {
-            const user = new User({
+        User.findOne({ email: email }, (err, user) => {
+            if (err) return next(err);
+
+            const newUser = new User({
                 email: email,
-                password: password
+                password: password,
+                firstName: firstname,
+                lastName: lastname,
             });
 
-            // Handle errors
-            if ( err ) { return next( err ); }
-
-            // Handle existing user error
-            if ( existingUser ) {
+            // email já esta a ser usado.
+            if (user) {
                 return response.formatter.unprocess({
-                    error: "Email já esta a ser usado."
+                    error: 'Email já esta a ser usado.'
                 })
             }
-
-            // Save user to DB
-            user.save( function() {
+            // Salvar utilizador na base de dados
+            newUser.save( function() {
                 if (err) return next(err)
 
                 return response.formatter.ok({
-                    token: generateTokenByUser(user)
+                    token: generateTokenByUser(newUser)
                 })
 
             });
