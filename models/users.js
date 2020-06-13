@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true
     },
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
@@ -16,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function (models) {
     User.hasMany(models.Malware, {
-       foreignKey: 'user_id',
+      foreignKey: 'user_id',
     })
   };
 

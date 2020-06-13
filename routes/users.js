@@ -3,19 +3,19 @@ var express = require('express');
 var router = express.Router();
 var UsersController = require('../controllers/UsersController');
 
-// get all malwares
+// get all users
 router.get('/', UsersController.index);
 
-// get one malware
+// get one user
 router.get('/:id', UsersController.findUser);
 
-// create malware
-//TODO: router.post('/', MalwareController.create);
+// create user
+router.post('/', UsersController.createUser);
 
-// update malware
-//TODO: router.put('/', MalwareController.create);
+// update user
+router.put('/:id', UsersController.updateUser);
 
-//delete malware
-//TODO: router.delete('/', MalwareController.create);
+//delete user
+router.delete('/:id', UsersController.deleteUser);
 
 module.exports = router;
