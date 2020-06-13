@@ -1,17 +1,42 @@
-"use strict";
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
-  const Users = sequelize.define(
-    "Users",
-    {
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
+  const User = sequelize.define('Users', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
-    {}
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+  }, {
+  }
   );
-  Users.associate = function (models) {
-    // associations can be defined here
+
+  User.associate = function (models) {
+    User.hasMany(models.Malware, {
+      foreignKey: 'user_id',
+    })
   };
-  return Users;
+
+  User.beforeCreate((user, options) => {
+    return bcrypt.hash(user.password, 10)
+      .then(hash => {
+        user.password = hash;
+      })
+      .catch(err => {
+        throw new Error();
+      });
+  });
+
+  User.prototype.comparePassword = function (candidatePassword, callback) {
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+      if (err) return callback(err);
+      callback(null, isMatch);
+    })
+  }
+
+  return User;
 };
