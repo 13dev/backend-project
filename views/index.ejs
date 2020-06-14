@@ -1,5 +1,13 @@
 <form action="/malwares/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" />
-    <input type="text" name="malware_id">
+    <label for="image">
+        Image:
+        <input type="file" name="image" />
+    </label>
+    <br>
+    <label for="malware_id">
+        Malware id:
+        <input type="text" name="malware_id">
+    </label>
+    <br><br>
     <input type="submit" name="submit">
 </form>
