@@ -1,3 +1,7 @@
+<% if (uploadedImage) { %>
+    <img src="/uploads/<%= uploadedImage %>" alt="Image" width="300">
+<% } %>
+
 <form action="/malwares/upload" method="post" enctype="multipart/form-data">
     <label for="image">
         Image:
@@ -10,4 +14,5 @@
     </label>
     <br><br>
     <input type="submit" name="submit">
+
 </form>
