@@ -8,6 +8,11 @@ module.exports = new class AuthController {
         })
     }
 
+    logout (request, response, next) {
+        request.logout();
+        response.formatter.ok('Logged out')
+    }
+
     // Logica de registar
     register (request, response, next) {
         const {

@@ -23,23 +23,23 @@ module.exports = new class UsersController {
       lastName: request.body.lastName,
       email: request.body.email,
       password: request.body.password,
-      createdAt: new Date(),
-      updatedAt: new Date()
     })
       .then((result) => response.formatter.ok(result))
       .catch((result) => response.formatter.serverError(result));
   }
+
   //UPDATE USER
   updateUser(request, response, next) {
     Users.update({
-      firstName: request.params.firstName,
-      lastName: request.params.lastName,
-      email: request.params.email,
-      password: request.params.password,
+      firstName: request.body.firstName,
+      lastName: request.body.lastName,
+      email: request.body.email,
+      password: request.body.password,
     }, { where: { id: request.params.id } })
       .then((result) => response.formatter.ok(result))
       .catch((result) => response.formatter.serverError(result));
   }
+
   //DELETE USER
   deleteUser(request, response, next) {
     Users.destroy({ where: { id: request.params.id } })

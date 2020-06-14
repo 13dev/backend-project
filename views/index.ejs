@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<% if (uploadedImage) { %>
+    <img src="/uploads/<%= uploadedImage %>" alt="Image" width="300">
+<% } %>
+
+<form action="/malwares/upload" method="post" enctype="multipart/form-data">
+    <label for="image">
+        Image:
+        <input type="file" name="image" />
+    </label>
+    <br>
+    <label for="malware_id">
+        Malware id:
+        <input type="text" name="malware_id">
+    </label>
+    <br><br>
+    <input type="submit" name="submit">
+
+</form>
