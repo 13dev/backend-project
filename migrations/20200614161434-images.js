@@ -4,11 +4,11 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.createTable('images', {
         id: Sequelize.INTEGER,
-        malware: {
+        malware_id: {
           allowNull: false,
           type: Sequelize.INTEGER,
           references: {
-            model: 'images',
+            model: 'malwares',
             key: 'id'
           }
         },

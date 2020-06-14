@@ -3,13 +3,3 @@
     <input type="text" name="malware_id">
     <input type="submit" name="submit">
 </form>
-<script>
-    var express = require('express')
-    var multer = require('multer')
-    var upload = multer({ dest: 'uploads/' })
-
-    var app = express();
-    app.post('/malwares/upload', upload.single('image'), function (req, res, next) {
-        res.send(res.file);
-    })
-</script>

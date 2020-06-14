@@ -7,9 +7,11 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true
             },
             path: DataTypes.INTEGER,
-            malware_id: DataTypes.STRING,
+            malware_id: DataTypes.INTEGER,
         },
-        {}
+        {
+            timestamps:false,
+        }
     );
 
     Image.associate = function (models) {
