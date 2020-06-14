@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<form action="/malware/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="image" />
+    <input type="text" name="malware_id">
+</form>
+<script>
+    var express = require('express')
+    var multer = require('multer')
+    var upload = multer({ dest: 'uploads/' })
+
+    var app = express();
+</script>
